@@ -128,19 +128,21 @@ const FeedbackForm = () => {
               <button
                 type="button"
                 onClick={() => setRating("loved")}
-                className={`p-6 rounded-2xl border-2 transition-all duration-200 ${
+                className={`p-6 rounded-2xl border-2 transition-all duration-300 ${
                   rating === "loved"
-                    ? "bg-primary border-primary shadow-lg scale-105"
-                    : "bg-white border-border hover:border-primary hover:shadow-md"
+                    ? "bg-primary border-primary shadow-lg animate-bounce-in animate-glow"
+                    : "bg-white border-border hover:border-primary hover:shadow-md hover:scale-105"
                 }`}
               >
                 <ThumbsUp
-                  className={`w-10 h-10 mx-auto mb-3 ${
-                    rating === "loved" ? "text-primary-foreground" : "text-primary"
+                  className={`w-10 h-10 mx-auto mb-3 transition-all duration-300 ${
+                    rating === "loved" 
+                      ? "text-primary-foreground animate-bounce-in" 
+                      : "text-primary"
                   }`}
                 />
                 <span
-                  className={`block text-lg font-semibold ${
+                  className={`block text-lg font-semibold transition-all duration-300 ${
                     rating === "loved" ? "text-primary-foreground" : "text-foreground"
                   }`}
                 >
@@ -151,19 +153,21 @@ const FeedbackForm = () => {
               <button
                 type="button"
                 onClick={() => setRating("okay")}
-                className={`p-6 rounded-2xl border-2 transition-all duration-200 ${
+                className={`p-6 rounded-2xl border-2 transition-all duration-300 ${
                   rating === "okay"
-                    ? "bg-muted border-muted shadow-lg scale-105"
-                    : "bg-white border-border hover:border-muted-foreground hover:shadow-md"
+                    ? "bg-muted border-muted shadow-lg animate-bounce-in"
+                    : "bg-white border-border hover:border-muted-foreground hover:shadow-md hover:scale-105"
                 }`}
               >
                 <Smile
-                  className={`w-10 h-10 mx-auto mb-3 ${
-                    rating === "okay" ? "text-foreground" : "text-muted-foreground"
+                  className={`w-10 h-10 mx-auto mb-3 transition-all duration-300 ${
+                    rating === "okay" 
+                      ? "text-foreground animate-bounce-in" 
+                      : "text-muted-foreground"
                   }`}
                 />
                 <span
-                  className={`block text-lg font-semibold ${
+                  className={`block text-lg font-semibold transition-all duration-300 ${
                     rating === "okay" ? "text-foreground" : "text-foreground"
                   }`}
                 >
@@ -174,19 +178,21 @@ const FeedbackForm = () => {
               <button
                 type="button"
                 onClick={() => setRating("not-good")}
-                className={`p-6 rounded-2xl border-2 transition-all duration-200 ${
+                className={`p-6 rounded-2xl border-2 transition-all duration-300 ${
                   rating === "not-good"
-                    ? "bg-secondary border-secondary shadow-lg scale-105"
-                    : "bg-white border-border hover:border-secondary hover:shadow-md"
+                    ? "bg-secondary border-secondary shadow-lg animate-bounce-in animate-glow-red"
+                    : "bg-white border-border hover:border-secondary hover:shadow-md hover:scale-105"
                 }`}
               >
                 <ThumbsDown
-                  className={`w-10 h-10 mx-auto mb-3 ${
-                    rating === "not-good" ? "text-secondary-foreground" : "text-secondary"
+                  className={`w-10 h-10 mx-auto mb-3 transition-all duration-300 ${
+                    rating === "not-good" 
+                      ? "text-secondary-foreground animate-bounce-in" 
+                      : "text-secondary"
                   }`}
                 />
                 <span
-                  className={`block text-lg font-semibold ${
+                  className={`block text-lg font-semibold transition-all duration-300 ${
                     rating === "not-good" ? "text-secondary-foreground" : "text-foreground"
                   }`}
                 >

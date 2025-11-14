@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { ThumbsUp, Smile, ThumbsDown } from "lucide-react";
+import { ThumbsUp, Smile, ThumbsDown, Star } from "lucide-react";
 
 type Rating = "loved" | "okay" | "not-good" | null;
 
 const FeedbackForm = () => {
   const [rating, setRating] = useState<Rating>(null);
+  const [starRating, setStarRating] = useState(0);
+  const [hoveredStar, setHoveredStar] = useState(0);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -16,12 +18,13 @@ const FeedbackForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ rating, name, location, feedback });
+    console.log({ rating, starRating, name, location, feedback });
     setSubmitted(true);
   };
 
   const handleReset = () => {
     setRating(null);
+    setStarRating(0);
     setName("");
     setLocation("");
     setFeedback("");
@@ -80,6 +83,42 @@ const FeedbackForm = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Star Rating */}
+          <div className="space-y-4">
+            <label className="block text-sm font-medium text-foreground">
+              Rate us with stars <span className="text-muted-foreground">(optional)</span>
+            </label>
+            <div className="flex items-center justify-center gap-2 p-6 bg-accent/30 rounded-2xl">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setStarRating(star)}
+                  onMouseEnter={() => setHoveredStar(star)}
+                  onMouseLeave={() => setHoveredStar(0)}
+                  className="group transition-transform duration-200 hover:scale-125 active:scale-110"
+                >
+                  <Star
+                    className={`w-10 h-10 md:w-12 md:h-12 transition-all duration-300 ${
+                      star <= (hoveredStar || starRating)
+                        ? "fill-primary text-primary scale-110 animate-pulse"
+                        : "text-muted-foreground/30 hover:text-muted-foreground/50"
+                    }`}
+                    strokeWidth={2}
+                  />
+                </button>
+              ))}
+            </div>
+            {starRating > 0 && (
+              <p className="text-center text-sm font-medium text-primary animate-fade-in">
+                You rated us {starRating} star{starRating !== 1 ? "s" : ""}! 
+                {starRating === 5 && " ⭐ Amazing!"}
+                {starRating === 4 && " 😊 Great!"}
+                {starRating === 3 && " 👍 Good!"}
+              </p>
+            )}
+          </div>
+
           {/* Rating Buttons */}
           <div className="space-y-3">
             <label className="block text-sm font-medium text-foreground mb-4">

@@ -1,0 +1,218 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card } from "@/components/ui/card";
+import { ThumbsUp, Smile, ThumbsDown } from "lucide-react";
+
+type Rating = "loved" | "okay" | "not-good" | null;
+
+const FeedbackForm = () => {
+  const [rating, setRating] = useState<Rating>(null);
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log({ rating, name, location, feedback });
+    setSubmitted(true);
+  };
+
+  const handleReset = () => {
+    setRating(null);
+    setName("");
+    setLocation("");
+    setFeedback("");
+    setSubmitted(false);
+  };
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-accent to-background flex items-center justify-center p-4">
+        <Card className="max-w-lg w-full p-8 md:p-12 text-center shadow-xl border-0">
+          <div className="mb-6">
+            <div className="w-24 h-24 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center">
+              <svg
+                className="w-12 h-12 text-primary"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+            </div>
+          </div>
+          <h2 className="text-3xl font-bold text-foreground mb-4">
+            Thank you! 🥛
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Your feedback helps us make African Joy even better.
+          </p>
+          <Button
+            onClick={handleReset}
+            variant="outline"
+            size="lg"
+            className="w-full md:w-auto"
+          >
+            Submit Another Response
+          </Button>
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-accent to-background flex items-center justify-center p-4">
+      <Card className="max-w-2xl w-full p-6 md:p-10 shadow-xl border-0">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+            How was your experience with African Joy Dairy?
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Your feedback helps us improve our products.
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Rating Buttons */}
+          <div className="space-y-3">
+            <label className="block text-sm font-medium text-foreground mb-4">
+              Rate your experience
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <button
+                type="button"
+                onClick={() => setRating("loved")}
+                className={`p-6 rounded-2xl border-2 transition-all duration-200 ${
+                  rating === "loved"
+                    ? "bg-primary border-primary shadow-lg scale-105"
+                    : "bg-white border-border hover:border-primary hover:shadow-md"
+                }`}
+              >
+                <ThumbsUp
+                  className={`w-10 h-10 mx-auto mb-3 ${
+                    rating === "loved" ? "text-primary-foreground" : "text-primary"
+                  }`}
+                />
+                <span
+                  className={`block text-lg font-semibold ${
+                    rating === "loved" ? "text-primary-foreground" : "text-foreground"
+                  }`}
+                >
+                  Loved it
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setRating("okay")}
+                className={`p-6 rounded-2xl border-2 transition-all duration-200 ${
+                  rating === "okay"
+                    ? "bg-muted border-muted shadow-lg scale-105"
+                    : "bg-white border-border hover:border-muted-foreground hover:shadow-md"
+                }`}
+              >
+                <Smile
+                  className={`w-10 h-10 mx-auto mb-3 ${
+                    rating === "okay" ? "text-foreground" : "text-muted-foreground"
+                  }`}
+                />
+                <span
+                  className={`block text-lg font-semibold ${
+                    rating === "okay" ? "text-foreground" : "text-foreground"
+                  }`}
+                >
+                  It was okay
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setRating("not-good")}
+                className={`p-6 rounded-2xl border-2 transition-all duration-200 ${
+                  rating === "not-good"
+                    ? "bg-secondary border-secondary shadow-lg scale-105"
+                    : "bg-white border-border hover:border-secondary hover:shadow-md"
+                }`}
+              >
+                <ThumbsDown
+                  className={`w-10 h-10 mx-auto mb-3 ${
+                    rating === "not-good" ? "text-secondary-foreground" : "text-secondary"
+                  }`}
+                />
+                <span
+                  className={`block text-lg font-semibold ${
+                    rating === "not-good" ? "text-secondary-foreground" : "text-foreground"
+                  }`}
+                >
+                  Not good
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Optional Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label htmlFor="name" className="block text-sm font-medium text-foreground">
+                Your name <span className="text-muted-foreground">(optional)</span>
+              </label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="e.g., John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="h-12 rounded-xl border-2"
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="location" className="block text-sm font-medium text-foreground">
+                Your location <span className="text-muted-foreground">(optional)</span>
+              </label>
+              <Input
+                id="location"
+                type="text"
+                placeholder="e.g., Dar es Salaam, Arusha"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                className="h-12 rounded-xl border-2"
+              />
+            </div>
+          </div>
+
+          {/* Feedback Text */}
+          <div className="space-y-2">
+            <label htmlFor="feedback" className="block text-sm font-medium text-foreground">
+              Tell us what we should improve <span className="text-muted-foreground">(optional)</span>
+            </label>
+            <Textarea
+              id="feedback"
+              placeholder="Share your thoughts..."
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              className="min-h-32 rounded-xl border-2 resize-none"
+            />
+          </div>
+
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            disabled={!rating}
+            className="w-full h-14 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Submit Feedback
+          </Button>
+        </form>
+      </Card>
+    </div>
+  );
+};
+
+export default FeedbackForm;

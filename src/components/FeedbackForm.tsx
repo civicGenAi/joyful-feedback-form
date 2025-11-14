@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,7 +20,45 @@ const FeedbackForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ rating, starRating, name, location, feedback });
+    
+    // Trigger confetti for 5-star reviews
+    if (starRating === 5) {
+      triggerConfetti();
+    }
+    
     setSubmitted(true);
+  };
+
+  const triggerConfetti = () => {
+    // First burst
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#377536', '#E9242B', '#FFD700', '#FFF'],
+    });
+
+    // Second burst with delay
+    setTimeout(() => {
+      confetti({
+        particleCount: 50,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ['#377536', '#E9242B', '#FFD700', '#FFF'],
+      });
+    }, 200);
+
+    // Third burst from right
+    setTimeout(() => {
+      confetti({
+        particleCount: 50,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ['#377536', '#E9242B', '#FFD700', '#FFF'],
+      });
+    }, 400);
   };
 
   const handleReset = () => {
@@ -31,12 +70,26 @@ const FeedbackForm = () => {
     setSubmitted(false);
   };
 
+  useEffect(() => {
+    // Trigger confetti when confirmation screen shows for 5-star reviews
+    if (submitted && starRating === 5) {
+      const timer = setTimeout(() => {
+        triggerConfetti();
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [submitted, starRating]);
+
   if (submitted) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-accent to-background flex items-center justify-center p-4">
-        <Card className="max-w-lg w-full p-8 md:p-12 text-center shadow-xl border-0">
+        <Card className="max-w-lg w-full p-8 md:p-12 text-center shadow-xl border-0 animate-fade-in">
           <div className="mb-6">
-            <div className="w-24 h-24 mx-auto mb-6 bg-primary/10 rounded-full flex items-center justify-center">
+            <div className={`w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center ${
+              starRating === 5 
+                ? "bg-primary/20 animate-bounce-in" 
+                : "bg-primary/10"
+            }`}>
               <svg
                 className="w-12 h-12 text-primary"
                 viewBox="0 0 24 24"
@@ -52,10 +105,13 @@ const FeedbackForm = () => {
             </div>
           </div>
           <h2 className="text-3xl font-bold text-foreground mb-4">
-            Thank you! 🥛
+            {starRating === 5 ? "Thank you! 🎉" : "Thank you! 🥛"}
           </h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Your feedback helps us make African Joy even better.
+            {starRating === 5 
+              ? "We're thrilled you loved African Joy! Your amazing feedback helps us keep delivering excellence."
+              : "Your feedback helps us make African Joy even better."
+            }
           </p>
           <Button
             onClick={handleReset}

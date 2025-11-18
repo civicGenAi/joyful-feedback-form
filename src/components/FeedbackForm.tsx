@@ -131,7 +131,37 @@ const FeedbackForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-accent to-background flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-accent to-background flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Animated SVG Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-10">
+        {/* Milk drops animation */}
+        <svg className="absolute top-10 left-10 w-16 h-16 text-primary animate-[float_6s_ease-in-out_infinite]" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        </svg>
+        <svg className="absolute top-20 right-20 w-12 h-12 text-secondary animate-[float_8s_ease-in-out_infinite]" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        </svg>
+        <svg className="absolute bottom-20 left-1/4 w-14 h-14 text-primary animate-[float_7s_ease-in-out_infinite]" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        </svg>
+        
+        {/* Dairy product icons */}
+        <svg className="absolute top-1/3 right-10 w-20 h-20 text-primary animate-[spin_20s_linear_infinite]" viewBox="0 0 100 140" fill="none">
+          <path d="M30 35 L30 120 Q30 130 40 130 L60 130 Q70 130 70 120 L70 35 Z" fill="currentColor" opacity="0.3"/>
+          <rect x="40" y="20" width="20" height="15" fill="currentColor" opacity="0.4"/>
+          <rect x="38" y="15" width="24" height="8" rx="2" fill="currentColor"/>
+        </svg>
+        
+        {/* Floating hearts for positive vibe */}
+        <svg className="absolute bottom-1/3 right-1/4 w-10 h-10 text-secondary animate-[pulse_3s_ease-in-out_infinite]" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        
+        {/* Star shapes */}
+        <svg className="absolute top-1/2 left-10 w-12 h-12 text-primary animate-[spin_15s_linear_infinite]" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
       <Card className="max-w-2xl w-full p-6 md:p-10 shadow-xl border-0">
         <div className="mb-8 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">

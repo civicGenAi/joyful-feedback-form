@@ -64,26 +64,33 @@ export const exportToPDF = async (
   doc.setFillColor(55, 117, 54); // Primary green
   doc.rect(0, 0, pageWidth, 40, 'F');
 
-  // Add milk bottle icon (simplified)
+  // African Joy Dairy Logo (circular with milk drop)
+  // Circle background
   doc.setFillColor(255, 255, 255);
-  doc.roundedRect(15, 10, 8, 12, 1, 1, 'F');
-  doc.rect(16.5, 8, 5, 3, 'F');
+  doc.circle(19, 20, 8, 'F');
+
+  // Milk drop/leaf shape inside circle
   doc.setFillColor(55, 117, 54);
-  doc.rect(16, 18, 6, 4, 'F');
+  doc.ellipse(19, 20, 4, 6, 'F');
+
+  // Accent stroke at bottom
+  doc.setDrawColor(233, 36, 43); // Red accent
+  doc.setLineWidth(0.5);
+  doc.line(16, 24, 22, 24);
 
   // Company name
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(24);
   doc.setFont('helvetica', 'bold');
-  doc.text('African Joy Dairy', 30, 20);
+  doc.text('African Joy Dairy', 35, 20);
 
   doc.setFontSize(12);
   doc.setFont('helvetica', 'normal');
-  doc.text('Customer Feedback Analytics Report', 30, 28);
+  doc.text('Customer Feedback Analytics Report', 35, 28);
 
   // Date
   doc.setFontSize(10);
-  doc.text(`Generated: ${format(new Date(), 'PPP')}`, 30, 34);
+  doc.text(`Generated: ${format(new Date(), 'PPP')}`, 35, 34);
 
   yPos = 50;
 

@@ -53,7 +53,7 @@ const LoadingIndicator = ({
 
           {/* African Joy Dairy Logo */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <img src="/review.png" alt="African Joy Dairy Logo" className="w-20 h-20 rounded-full object-cover animate-bounce-in" />
+            <AfricanJoyLogo variant="icon" className="w-20 h-20 animate-bounce-in" />
           </div>
         </div>
 

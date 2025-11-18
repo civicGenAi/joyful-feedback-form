@@ -53,10 +53,22 @@ const Login = () => {
       </div>
 
       <div className="w-full max-w-md relative z-10">
+        {/* Back to Home Button */}
+        <div className="mb-6 animate-fade-in">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
+          >
+            <Home className="w-4 h-4" />
+            Back to Home
+          </Button>
+        </div>
+
         {/* Logo/Brand Section */}
         <div className="text-center mb-8 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-          <div className="inline-flex items-center justify-center w-24 h-24 mb-4 animate-bounce-in">
-            <img src="/review.png" alt="African Joy Dairy Logo" className="w-full h-full object-cover rounded-full" />
+          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-primary to-primary/60 rounded-2xl mb-4 shadow-2xl animate-bounce-in">
+            <AfricanJoyLogo variant="icon" className="w-16 h-16" />
           </div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
             African Joy Dairy
@@ -155,18 +167,6 @@ const Login = () => {
         {/* Footer Info */}
         <div className="mt-6 text-center text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: '0.3s' }}>
           <p>Need access? Contact your administrator</p>
-        </div>
-
-        {/* Back to Home Button */}
-        <div className="mt-4 animate-fade-in">
-          <Button
-            variant="outline"
-            onClick={() => navigate('/')}
-            className="w-full flex items-center justify-center gap-2 text-muted-foreground hover:text-primary hover:border-primary transition-colors"
-          >
-            <Home className="w-4 h-4" />
-            Back to Home
-          </Button>
         </div>
       </div>
     </div>

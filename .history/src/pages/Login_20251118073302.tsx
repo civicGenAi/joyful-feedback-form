@@ -156,18 +156,6 @@ const Login = () => {
         <div className="mt-6 text-center text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: '0.3s' }}>
           <p>Need access? Contact your administrator</p>
         </div>
-
-        {/* Back to Home Button */}
-        <div className="mt-4 animate-fade-in">
-          <Button
-            variant="outline"
-            onClick={() => navigate('/')}
-            className="w-full flex items-center justify-center gap-2 text-muted-foreground hover:text-primary hover:border-primary transition-colors"
-          >
-            <Home className="w-4 h-4" />
-            Back to Home
-          </Button>
-        </div>
       </div>
     </div>
   );

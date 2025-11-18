@@ -140,6 +140,14 @@ export default {
 						opacity: "0.6",
 					},
 				},
+				shimmer: {
+					"0%": {
+						transform: "translateX(-100%)",
+					},
+					"100%": {
+						transform: "translateX(100%)",
+					},
+				},
 			},
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -148,6 +156,7 @@ export default {
         "bounce-in": "bounce-in 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
         "glow": "glow 2s ease-in-out infinite",
         "glow-red": "glow-red 2s ease-in-out infinite",
+        "shimmer": "shimmer 2s ease-in-out infinite",
       },
     },
   },

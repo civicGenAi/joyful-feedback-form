@@ -7,6 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { ThumbsUp, Smile, ThumbsDown, Star } from "lucide-react";
+import { submitFeedback } from "@/lib/api";
+import { InlineLoader } from "./LoadingIndicator";
+import { useToast } from "@/hooks/use-toast";
 
 type Rating = "loved" | "okay" | "not-good" | null;
 
@@ -18,17 +21,48 @@ const FeedbackForm = () => {
   const [location, setLocation] = useState("");
   const [feedback, setFeedback] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ rating, starRating, name, location, feedback });
-    
-    // Trigger confetti for 5-star reviews
-    if (starRating === 5) {
-      triggerConfetti();
+
+    if (starRating === 0) {
+      toast({
+        title: "Rating Required",
+        description: "Please select a star rating before submitting.",
+        variant: "destructive",
+      });
+      return;
     }
-    
-    setSubmitted(true);
+
+    setSubmitting(true);
+
+    // Submit to Supabase
+    const result = await submitFeedback({
+      name: name.trim() || undefined,
+      location: location.trim() || undefined,
+      rating: starRating,
+      feedback: feedback.trim() || undefined,
+      rating_type: rating || (starRating >= 4 ? "loved" : starRating >= 3 ? "okay" : "not_good"),
+    });
+
+    setSubmitting(false);
+
+    if (result.success) {
+      // Trigger confetti for 5-star reviews
+      if (starRating === 5) {
+        triggerConfetti();
+      }
+
+      setSubmitted(true);
+    } else {
+      toast({
+        title: "Submission Failed",
+        description: result.error || "Failed to submit feedback. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const triggerConfetti = () => {
@@ -347,10 +381,17 @@ const FeedbackForm = () => {
           {/* Submit Button */}
           <Button
             type="submit"
-            disabled={!rating}
+            disabled={!rating || starRating === 0 || submitting}
             className="w-full h-14 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Submit Feedback
+            {submitting ? (
+              <span className="flex items-center gap-2">
+                <InlineLoader size="sm" />
+                Submitting...
+              </span>
+            ) : (
+              "Submit Feedback"
+            )}
           </Button>
         </form>
       </Card>

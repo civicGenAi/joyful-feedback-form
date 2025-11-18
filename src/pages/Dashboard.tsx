@@ -1,8 +1,15 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Star, TrendingUp, Users, Award } from "lucide-react";
+import { Star, TrendingUp, Users, Award, CalendarIcon, Filter } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 import { NavLink } from "@/components/NavLink";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useState } from "react";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 // Mock data for ratings over time
 const ratingsOverTime = [
@@ -35,9 +42,20 @@ const chartConfig = {
 };
 
 const Dashboard = () => {
+  const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({
+    from: undefined,
+    to: undefined,
+  });
+  const [ratingFilter, setRatingFilter] = useState<string>("all");
+
   const totalReviews = ratingDistribution.reduce((sum, item) => sum + item.count, 0);
   const avgRating = 4.9;
   const fiveStarPercentage = ((136 / totalReviews) * 100).toFixed(0);
+
+  const handleResetFilters = () => {
+    setDateRange({ from: undefined, to: undefined });
+    setRatingFilter("all");
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 p-4 md:p-8">
@@ -58,6 +76,108 @@ const Dashboard = () => {
             </span>
           </NavLink>
         </div>
+
+        {/* Filters Section */}
+        <Card className="bg-card border-border">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <Filter className="h-5 w-5 text-primary" />
+              <CardTitle className="text-foreground">Filters</CardTitle>
+            </div>
+            <CardDescription>Refine your analytics view</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-end">
+              {/* Date Range Picker */}
+              <div className="flex-1 space-y-2">
+                <label className="text-sm font-medium text-foreground">Date Range</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !dateRange.from && !dateRange.to && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {dateRange.from ? (
+                        dateRange.to ? (
+                          <>
+                            {format(dateRange.from, "LLL dd, y")} - {format(dateRange.to, "LLL dd, y")}
+                          </>
+                        ) : (
+                          format(dateRange.from, "LLL dd, y")
+                        )
+                      ) : (
+                        <span>Pick a date range</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="range"
+                      selected={{ from: dateRange.from, to: dateRange.to }}
+                      onSelect={(range) => setDateRange({ from: range?.from, to: range?.to })}
+                      numberOfMonths={2}
+                      className={cn("p-3 pointer-events-auto")}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* Rating Filter */}
+              <div className="flex-1 space-y-2">
+                <label className="text-sm font-medium text-foreground">Filter by Rating</label>
+                <Select value={ratingFilter} onValueChange={setRatingFilter}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select rating" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Ratings</SelectItem>
+                    <SelectItem value="5">5 Stars Only</SelectItem>
+                    <SelectItem value="4">4 Stars Only</SelectItem>
+                    <SelectItem value="3">3 Stars Only</SelectItem>
+                    <SelectItem value="2">2 Stars Only</SelectItem>
+                    <SelectItem value="1">1 Star Only</SelectItem>
+                    <SelectItem value="4-5">4-5 Stars (Positive)</SelectItem>
+                    <SelectItem value="1-3">1-3 Stars (Needs Improvement)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Reset Button */}
+              <Button
+                variant="secondary"
+                onClick={handleResetFilters}
+                className="md:self-end"
+              >
+                Reset Filters
+              </Button>
+            </div>
+            
+            {/* Active Filters Display */}
+            {(dateRange.from || ratingFilter !== "all") && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="text-sm text-muted-foreground">Active filters:</span>
+                {dateRange.from && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
+                    {dateRange.to 
+                      ? `${format(dateRange.from, "MMM dd")} - ${format(dateRange.to, "MMM dd")}`
+                      : format(dateRange.from, "MMM dd, yyyy")}
+                  </span>
+                )}
+                {ratingFilter !== "all" && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">
+                    {ratingFilter === "4-5" ? "Positive Reviews" : 
+                     ratingFilter === "1-3" ? "Needs Improvement" : 
+                     `${ratingFilter} Star${ratingFilter === "1" ? "" : "s"}`}
+                  </span>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

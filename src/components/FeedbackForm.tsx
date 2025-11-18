@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import confetti from "canvas-confetti";
 import { playChime } from "@/lib/audio-utils";
+import { NavLink } from "./NavLink";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -132,6 +133,13 @@ const FeedbackForm = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-accent to-background flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute top-4 right-4 z-20">
+        <NavLink to="/dashboard">
+          <span className="text-sm text-primary hover:text-primary/80 transition-colors font-medium">
+            📊 View Analytics
+          </span>
+        </NavLink>
+      </div>
       {/* Animated SVG Background */}
       <div className="absolute inset-0 pointer-events-none opacity-10">
         {/* Milk drops animation */}
